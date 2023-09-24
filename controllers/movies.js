@@ -44,7 +44,7 @@ module.exports.addMovie = (req, res, next) => {
 };
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({}).sort({ createdAt: -1 })
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.status(HTTP_STATUS_OK).send(movies))
     .catch(next);
 };
@@ -57,7 +57,7 @@ module.exports.deleteMovie = (req, res, next) => {
       } else if (!movie.owner.equals(req.user._id)) {
         throw new ForbiddenError('Нет прав на удаление фильма');
       } else {
-        movie.deleteOne(movie)
+        movie.deleteOne()
           .then(() => res.send({ message: 'Фильм удален' }))
           .catch((err) => next(err));
       }

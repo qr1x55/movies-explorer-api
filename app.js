@@ -1,22 +1,14 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
-const { rateLimit } = require('express-rate-limit');
 const helmet = require('helmet');
 const cors = require('cors');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
-const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/bitfilmsdb';
-const PORT = process.env.PORT || 3000;
+const limiter = require('./utils/limiter');
+const { PORT, DB_URL } = require('./utils/doteenv');
 
 const app = express();
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
 
 app.use(cors());
 
