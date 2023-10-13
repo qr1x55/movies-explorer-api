@@ -10,10 +10,7 @@ const { PORT, DB_URL } = require('./utils/doteenv');
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:3001',
-  credentials: true,
-}));
+app.use(cors());
 
 app.use(helmet());
 
